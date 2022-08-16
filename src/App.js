@@ -1,24 +1,46 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import Protected from "./components/ProtectedRoute";
 import Home from "./pages/Home";
-import Nav from "./pages/Nav";
-import Login from "./pages/Login";
+import LogIn from "./pages/LogIn";
 import Settings from "./pages/Settings";
-import Main from "./pages/Main";
+import Dashboard from "./pages/Dashboard";
 import PhotoDisplay from "./pages/PhotoDisplay";
 import './App.css';
+import Navbar from "./components/Navbar";
 
 export default function App() {
+  const [isLoggedIn, setisLoggedIn] = useState(false);
+
+  const logIn = () => {
+    setisLoggedIn(true);
+  };
+  const logOut = () => {
+    setisLoggedIn(false);
+  };
+
   return (
-    <BrowserRouter>
+    <Router>
+      <Navbar isLoggedIn={isLoggedIn} logOut={logOut} />
       <Routes>
-        <Route path="/" element={<Nav />}>
-          <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="userID" element={<Main />} />
-          <Route path="userID/photoDisplay" element={<PhotoDisplay />} />
-        </Route>
+        <Route index element={<Home />} />
+        <Route path="login" element={<LogIn logIn={logIn}/>} />
+        <Route path="settings" exact element={
+          <Protected isLoggedIn={isLoggedIn}>
+            <Settings />
+          </Protected>
+        } />
+        <Route path="dashboard" exact element={
+          <Protected isLoggedIn={isLoggedIn}>
+            <Dashboard />
+          </Protected>
+        } />
+        <Route path="dashboard/photoDisplay" exact element={
+          <Protected isLoggedIn={isLoggedIn}>
+            <PhotoDisplay />
+          </Protected>
+        } />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
