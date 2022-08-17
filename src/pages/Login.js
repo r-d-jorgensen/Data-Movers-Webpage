@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import { logInUser } from "../services/UserService";
-import "./LogIn.css";
-
 import axios from "axios";
 import serverEndpoint from "../utils/serverEndpoint";
+import "./LogIn.css";
 
 const LogIn = ({ setIsLoggedIn }) => {
   const [error, setError] = useState(null);
@@ -15,11 +13,11 @@ const LogIn = ({ setIsLoggedIn }) => {
   const handleLogin = (e) => {
     e.preventDefault();
     axios.get(`${serverEndpoint}/api/user/login/${username}/${password}`)
-      .then((response) => {
-        if (response.data.isAuthed) {
+      .then(({ data }) => {
+        if (data.isAuthed) {
           setIsLoggedIn(true);
           navigate("/dashboard");
-        } else setError(response.error);
+        } else setError(data.error);
       })
       .catch((error) => console.log(error));
   };
