@@ -11,7 +11,7 @@ import PhotoDisplay from "./pages/PhotoDisplay";
 import './App.css';
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState({isAuthed: false, token: "", user: {}});
 
   return (
     <Router>

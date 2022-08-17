@@ -4,13 +4,9 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 const Navbar = ({isLoggedIn, setIsLoggedIn}) => {
   const navigate = useNavigate();
 
-  const logOutUser = () => {
-    setIsLoggedIn(false);
-  };
-
   const handleLoging = () => {
     if (isLoggedIn) {
-      logOutUser();
+      setIsLoggedIn(false);
       navigate("/");
     } else navigate("/login");
   };

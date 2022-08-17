@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import serverEndpoint from "../utils/serverEndpoint";
+import { logInUser } from "../services/userService.js";
 import "./LogIn.css";
 
 const LogIn = ({ setIsLoggedIn }) => {
@@ -10,16 +9,14 @@ const LogIn = ({ setIsLoggedIn }) => {
   const [password, setPassword] = useState(null);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    axios.get(`${serverEndpoint}/api/user/login/${username}/${password}`)
-      .then(({ data }) => {
-        if (data.isAuthed) {
-          setIsLoggedIn(true);
-          navigate("/dashboard");
-        } else setError(data.error);
-      })
-      .catch((error) => console.log(error));
+    const auth = await logInUser(username, password);
+    
+    if (auth.isAuthed) {
+      setIsLoggedIn(auth);
+      navigate("/dashboard");
+    } else setError(auth.error);
   };
 
   return (
