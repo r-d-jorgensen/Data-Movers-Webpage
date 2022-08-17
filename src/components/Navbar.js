@@ -1,12 +1,13 @@
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 
 // stop navbar from showing login button on login page ?mabye use location?
-const Navbar = ({isLoggedIn, setIsLoggedIn}) => {
+const Navbar = ({userData, setUserData}) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLoging = () => {
-    if (isLoggedIn) {
-      setIsLoggedIn(false);
+    if (userData.isAuthed) {
+      setUserData({isAuthed: false, token: "", user: {}});
       navigate("/");
     } else navigate("/login");
   };
@@ -19,7 +20,7 @@ const Navbar = ({isLoggedIn, setIsLoggedIn}) => {
             <Link to="/">Home</Link>
           </li>
         </ul>
-        <button onClick={handleLoging}>{isLoggedIn ? "Log Out": "Log In"}</button>
+        {location.pathname !== "/login" ? <button onClick={handleLoging}>{userData ? "Log Out": "Log In"}</button> : null}
       </nav>
 
       <Outlet />

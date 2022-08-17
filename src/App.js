@@ -11,26 +11,26 @@ import PhotoDisplay from "./pages/PhotoDisplay";
 import './App.css';
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState({isAuthed: false, token: "", user: {}});
+  const [userData, setUserData] = useState({isAuthed: false, token: "", user: {}});
 
   return (
     <Router>
-      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Navbar userData={userData} setUserData={setUserData} />
       <Routes>
         <Route index element={<Home />} />
-        <Route path="login" element={<LogIn setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="login" element={<LogIn setUserData={setUserData} />} />
         <Route path="settings" exact element={
-          <Protected isLoggedIn={isLoggedIn}>
+          <Protected userData={userData}>
             <Settings />
           </Protected>
         } />
         <Route path="dashboard" exact element={
-          <Protected isLoggedIn={isLoggedIn}>
+          <Protected userData={userData}>
             <Dashboard />
           </Protected>
         } />
         <Route path="dashboard/photoDisplay" exact element={
-          <Protected isLoggedIn={isLoggedIn}>
+          <Protected userData={userData}>
             <PhotoDisplay />
           </Protected>
         } />

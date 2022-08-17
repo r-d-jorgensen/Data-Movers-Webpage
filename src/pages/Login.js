@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logInUser } from "../services/userService.js";
 import "./LogIn.css";
 
-const LogIn = ({ setIsLoggedIn }) => {
+const LogIn = ({ setUserData }) => {
   const [error, setError] = useState(null);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
@@ -14,7 +14,7 @@ const LogIn = ({ setIsLoggedIn }) => {
     const auth = await logInUser(username, password);
     
     if (auth.isAuthed) {
-      setIsLoggedIn(auth);
+      setUserData(auth);
       navigate("/dashboard");
     } else setError(auth.error);
   };
@@ -37,6 +37,7 @@ const LogIn = ({ setIsLoggedIn }) => {
           </div>
           <div className="error">{error}</div>
         </form>
+        <Link to="/signUp">Sign Up</Link>
       </div>
     </div>
   );
