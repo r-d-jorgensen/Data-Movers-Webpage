@@ -1,30 +1,24 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+
 import Protected from "./components/ProtectedRoute";
+import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
 import PhotoDisplay from "./pages/PhotoDisplay";
 import './App.css';
-import Navbar from "./components/Navbar";
 
 export default function App() {
-  const [isLoggedIn, setisLoggedIn] = useState(false);
-
-  const logIn = () => {
-    setisLoggedIn(true);
-  };
-  const logOut = () => {
-    setisLoggedIn(false);
-  };
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <Router>
-      <Navbar isLoggedIn={isLoggedIn} logOut={logOut} />
+      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <Routes>
         <Route index element={<Home />} />
-        <Route path="login" element={<LogIn logIn={logIn}/>} />
+        <Route path="login" element={<LogIn setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="settings" exact element={
           <Protected isLoggedIn={isLoggedIn}>
             <Settings />

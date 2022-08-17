@@ -1,30 +1,27 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+//import { logInUser } from "../services/UserService";
 import "./LogIn.css";
 
-const LogIn = ({ logIn }) => {
+import axios from "axios";
+import serverEndpoint from "../utils/serverEndpoint";
+
+const LogIn = ({ setIsLoggedIn }) => {
   const [error, setError] = useState(null);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const navigate = useNavigate();
 
-  // needs to talk to server
-  const callServer = (username, password) => {
-    if (username === "bob" && password === "123") return true;
-    return false;
-  }
-
   const handleLogin = (e) => {
-    // should use promises
     e.preventDefault();
-    const serverResponse = callServer(username, password);
-    if (serverResponse) {
-      logIn();
-      navigate("/dashboard");
-    } else {
-      setError("Login Credentais Invalid");
-    }
-    
+    axios.get(`${serverEndpoint}/api/user/login/${username}/${password}`)
+      .then((response) => {
+        if (response.data.isAuthed) {
+          setIsLoggedIn(true);
+          navigate("/dashboard");
+        } else setError(response.error);
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
