@@ -5,6 +5,7 @@ import Protected from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
+import SignUp from "./pages/SignUp"
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
 import PhotoDisplay from "./pages/PhotoDisplay";
@@ -19,6 +20,7 @@ export default function App() {
       <Routes>
         <Route index element={<Home />} />
         <Route path="login" element={<LogIn setUserData={setUserData} />} />
+        <Route path="/signUp" element={<SignUp setUserData={setUserData} />} />
         <Route path="settings" exact element={
           <Protected userData={userData}>
             <Settings />

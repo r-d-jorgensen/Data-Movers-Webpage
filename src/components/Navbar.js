@@ -20,7 +20,7 @@ const Navbar = ({userData, setUserData}) => {
             <Link to="/">Home</Link>
           </li>
         </ul>
-        {location.pathname !== "/login" ? <button onClick={handleLoging}>{userData ? "Log Out": "Log In"}</button> : null}
+        {location.pathname !== "/login" ? <button onClick={handleLoging}>{userData.isAuthed ? "Log Out": "Log In"}</button> : null}
       </nav>
 
       <Outlet />

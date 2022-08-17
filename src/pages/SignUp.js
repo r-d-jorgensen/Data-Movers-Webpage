@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { logInUser } from "../services/userService.js";
-import "./LogIn.css";
+import { useNavigate } from "react-router-dom";
+import { createNewUser } from "../services/userService.js";
+import "./LogIn.css"; // TODO: update or consolidate forms, css and classnames
 
-const LogIn = ({ setUserData }) => {
+const SignUp = ({ setUserData }) => {
   const [error, setError] = useState(null);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState(null);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    const auth = await logInUser(username, password);
-    console.log(auth);
+    const auth = await createNewUser(username, password, email);
+    
     if (auth.isAuthed) {
       setUserData(auth);
       navigate("/dashboard");
@@ -22,8 +23,8 @@ const LogIn = ({ setUserData }) => {
   return (
     <div className="login-page">
       <div className="login-form">
-        <div className="title">Log In</div>
-        <form className="form" onSubmit={handleLogin}>
+        <div className="title">Sign Up</div>
+        <form className="form" onSubmit={handleSignUp}>
           <div className="input-container">
             <label>Username </label>
             <input type="text" name="username" onChange={e => setUsername(e.target.value)} required />
@@ -32,15 +33,18 @@ const LogIn = ({ setUserData }) => {
             <label>Password </label>
             <input type="password" name="password" onChange={e => setPassword(e.target.value)} required />
           </div>
+          <div className="input-container">
+            <label>Email </label>
+            <input type="email" name="email" onChange={e => setEmail(e.target.value)} required />
+          </div>
           <div className="button-container">
-            <input type="submit" name="Log in"></input>
+            <input type="submit" name="Sign Up"></input>
           </div>
           <div className="error">{error}</div>
         </form>
-        <Link to="/signUp">Sign Up</Link>
       </div>
     </div>
   );
 };
 
-export default LogIn;
+export default SignUp;

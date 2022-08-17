@@ -7,3 +7,10 @@ export async function logInUser(username, password) {
     .catch((error) => console.log(error));
   return response.data;
 }
+
+export async function createNewUser(username, password, email) {
+  const response = await axios.get(`${serverEndpoint}/api/user/newUser/${username}/${password}/${email}`)
+    .then((data) => data)
+    .catch((error) => console.log(error));
+  return response.data;
+}
