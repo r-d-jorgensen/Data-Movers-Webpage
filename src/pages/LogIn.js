@@ -9,6 +9,7 @@ const LogIn = ({ setUserData }) => {
   const [password, setPassword] = useState(null);
   const navigate = useNavigate();
 
+  // TODO: catch no response and other errors
   const handleLogin = async (e) => {
     e.preventDefault();
     const auth = await logInUser(username, password);

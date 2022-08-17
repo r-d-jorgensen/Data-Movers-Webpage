@@ -10,6 +10,7 @@ const SignUp = ({ setUserData }) => {
   const [email, setEmail] = useState(null);
   const navigate = useNavigate();
 
+  // TODO: catch no response and other errors
   const handleSignUp = async (e) => {
     e.preventDefault();
     const auth = await createNewUser(username, password, email);
