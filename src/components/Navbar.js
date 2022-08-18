@@ -22,7 +22,10 @@ const Navbar = ({userData, setUserData}) => {
         </ul>
         {location.pathname !== "/login" ? <button onClick={handleLoging}>{userData.isAuthed ? "Log Out": "Log In"}</button> : null}
       </nav>
-
+      <span style={{ bottom: '0%', right: '0%', position: 'fixed' }}>
+        ver
+        {process.env.REACT_APP_VERSION}
+      </span>
       <Outlet />
     </>
   )

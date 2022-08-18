@@ -1,6 +1,7 @@
 import axios from "axios";
 import serverEndpoint from "../utils/serverEndpoint";
 
+// TODO: check in on bug where refreshing causes user to be logged out
 // TODO: catch no response and other errors respond with empty auth if nothing
 export async function logInUser(username, password) {
   const response = await axios.get(`${serverEndpoint}/user/login/${username}/${password}`)
