@@ -1,15 +1,14 @@
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
+import userService from "../services/userService.js";
 
-// stop navbar from showing login button on login page ?mabye use location?
-const Navbar = ({userData, setUserData}) => {
+const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const isAuthed = userService.userData.isAuthed;
 
   const handleLoging = () => {
-    if (userData.isAuthed) {
-      setUserData({isAuthed: false, token: "", user: {}});
-      navigate("/");
-    } else navigate("/login");
+    if (isAuthed) navigate("/");
+    else navigate("/login");
   };
 
   return (
@@ -20,11 +19,10 @@ const Navbar = ({userData, setUserData}) => {
             <Link to="/">Home</Link>
           </li>
         </ul>
-        {location.pathname !== "/login" ? <button onClick={handleLoging}>{userData.isAuthed ? "Log Out": "Log In"}</button> : null}
+        {location.pathname !== "/login" ? <button onClick={handleLoging}>{isAuthed ? "Log Out": "Log In"}</button> : null}
       </nav>
       <span style={{ bottom: '0%', right: '0%', position: 'fixed' }}>
-        ver
-        {process.env.REACT_APP_VERSION}
+        ver - {process.env.REACT_APP_VERSION}
       </span>
       <Outlet />
     </>

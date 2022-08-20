@@ -1,8 +1,10 @@
-import { Navigate } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
+import userService from "../services/userService.js";
 
-const ProtectedRoute = ({ userData, children }) => {
-  if (!userData.isAuthed) return <Navigate to="/" replace />;
-  return children;
+const ProtectedRoute = ({ redirectPath = '/', children }) => {
+  const user = userService.userData;
+  if (user.isAuthed) return children ? children : <Outlet />;
+  return <Navigate to={redirectPath} replace />;
 };
 
 export default ProtectedRoute;

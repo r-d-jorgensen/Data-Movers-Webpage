@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { logInUser } from "../services/userService.js";
+import userService from "../services/userService.js";
 import "./LogIn.css";
 
-const LogIn = ({ setUserData }) => {
+const LogIn = () => {
   const [error, setError] = useState(null);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    const auth = await logInUser(username, password);
-    if (auth.isAuthed) {
-      setUserData(auth);
+    const user = userService.userData;
+    userService.logInUser(username, password);
+    if (user.isAuthed) {
       navigate("/dashboard");
-    } else setError(auth.error);
+    } else setError(user.error);
   };
 
   return (
