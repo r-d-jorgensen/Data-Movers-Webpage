@@ -2,33 +2,39 @@ import axios from "axios";
 import { BehaviorSubject } from 'rxjs';
 import serverEndpoint from "../utils/serverEndpoint";
 
+// TODO: check in on bug where refreshing causes user to be logged out
 const userSubject = new BehaviorSubject({
   isAuthed: false,
-  token: "",
-  error: "",
-  user_id: -1,
-  user_type_ENUM_id: -1
+  token: null,
+  error: null,
+  user_id: null,
+  user_type_ENUM_id: null
 });
 
-// TODO: catch no response and other errors respond with empty auth if nothing
 export async function createNewUser(username, password, email) {
-  const response = await axios.get(`${serverEndpoint}/user/newUser/${username}/${password}/${email}`)
+  const authResponse = await axios.get(`${serverEndpoint}/user/newUser/${username}/${password}/${email}`)
     .then((data) => data)
     .catch((error) => console.log(error));
-  return response.data;
+
+    if (!authResponse) return {isAuthed: false, error: "server did not respond"};
+    if (authResponse.error !== null) return {isAuthed: false, error: authResponse.error};
+
+    userSubject.next(authResponse);
+    return {isAuthed: true, error: null};
 }
 
-// TODO: check in on bug where refreshing causes user to be logged out
-// TODO: catch no response and other errors respond with empty auth if nothing
 async function logInUser(username, password) {
   const authResponse = await new Promise((resolve, reject) => {
     axios.get(`${serverEndpoint}/user/login/${username}/${password}`)
       .then((data) => resolve(data.data))
       .catch((error) => reject(error));
   });
-  
-  if (!authResponse) return {error: "server did not respond"};
+
+  if (!authResponse) return {isAuthed: false, error: "server did not respond"};
+  if (authResponse.error !== null) return {isAuthed: false, error: authResponse.error};
+
   userSubject.next(authResponse);
+  return {isAuthed: true, error: null};
 }
 
 function logoutUser() {

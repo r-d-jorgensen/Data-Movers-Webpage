@@ -21,9 +21,6 @@ const Navbar = () => {
         </ul>
         {location.pathname !== "/login" ? <button onClick={handleLoging}>{isAuthed ? "Log Out": "Log In"}</button> : null}
       </nav>
-      <span style={{ bottom: '0%', right: '0%', position: 'fixed' }}>
-        ver - {process.env.REACT_APP_VERSION}
-      </span>
       <Outlet />
     </>
   )

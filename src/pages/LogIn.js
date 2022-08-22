@@ -9,13 +9,13 @@ const LogIn = () => {
   const [password, setPassword] = useState(null);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const user = userService.userData;
-    userService.logInUser(username, password);
-    if (user.isAuthed) {
+    const auth = await userService.logInUser(username, password);
+    console.log(auth)
+    if (auth.isAuthed) {
       navigate("/dashboard");
-    } else setError(user.error);
+    } else setError(auth.error);
   };
 
   return (
