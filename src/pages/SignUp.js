@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createNewUser } from "../services/userService.js";
+import userService from "../services/userService.js";
 import "./LogIn.css"; // TODO: update or consolidate forms, css and classnames
 
-const SignUp = ({ setUserData }) => {
+const SignUp = () => {
   const [error, setError] = useState(null);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
@@ -12,10 +12,9 @@ const SignUp = ({ setUserData }) => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    const auth = await createNewUser(username, password, email);
-    
+    const auth = await userService.createNewUser(username, password, email);
+    console.log(auth.error)
     if (auth.isAuthed) {
-      setUserData(auth);
       navigate("/dashboard");
     } else setError(auth.error);
   };

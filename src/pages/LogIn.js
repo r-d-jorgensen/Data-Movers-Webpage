@@ -12,7 +12,6 @@ const LogIn = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     const auth = await userService.logInUser(username, password);
-    console.log(auth)
     if (auth.isAuthed) {
       navigate("/dashboard");
     } else setError(auth.error);

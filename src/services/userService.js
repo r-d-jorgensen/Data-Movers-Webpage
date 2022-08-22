@@ -11,9 +11,9 @@ const userSubject = new BehaviorSubject({
   user_type_ENUM_id: null
 });
 
-export async function createNewUser(username, password, email) {
+async function createNewUser(username, password, email) {
   const authResponse = await axios.get(`${serverEndpoint}/user/newUser/${username}/${password}/${email}`)
-    .then((data) => data)
+    .then((data) => data.data)
     .catch((error) => console.log(error));
 
     if (!authResponse) return {isAuthed: false, error: "server did not respond"};
@@ -38,7 +38,13 @@ async function logInUser(username, password) {
 }
 
 function logoutUser() {
-  userSubject.next(null);
+  userSubject.next({
+    isAuthed: false,
+    token: null,
+    error: null,
+    user_id: null,
+    user_type_ENUM_id: null
+  });
 }
 
 const userService = {

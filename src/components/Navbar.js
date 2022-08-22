@@ -7,7 +7,10 @@ const Navbar = () => {
   const isAuthed = userService.userData.isAuthed;
 
   const handleLoging = () => {
-    if (isAuthed) navigate("/");
+    if (isAuthed) {
+      userService.logoutUser();
+      navigate("/");
+    }
     else navigate("/login");
   };
 
