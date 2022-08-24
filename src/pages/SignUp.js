@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import userService from "../services/userService.js";
+import { createNewUser } from "../services/userService.js";
 import "./LogIn.css"; // TODO: update or consolidate forms, css and classnames
 
 const SignUp = () => {
@@ -12,8 +12,7 @@ const SignUp = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    const auth = await userService.createNewUser(username, password, email);
-    console.log(auth.error)
+    const auth = await createNewUser(username, password, email);
     if (auth.isAuthed) {
       navigate("/dashboard");
     } else setError(auth.error);

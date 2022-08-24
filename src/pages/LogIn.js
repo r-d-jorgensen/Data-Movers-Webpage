@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import userService from "../services/userService.js";
+import { logInUser } from "../services/userService.js";
 import "./LogIn.css";
 
 const LogIn = () => {
@@ -11,7 +11,7 @@ const LogIn = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const auth = await userService.logInUser(username, password);
+    const auth = await logInUser(username, password);
     if (auth.isAuthed) {
       navigate("/dashboard");
     } else setError(auth.error);

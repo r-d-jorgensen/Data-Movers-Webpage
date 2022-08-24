@@ -1,14 +1,13 @@
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
-import userService from "../services/userService.js";
+import { logoutUser, checkAuth } from "../services/userService.js";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isAuthed = userService.userData.isAuthed;
 
   const handleLoging = () => {
-    if (isAuthed) {
-      userService.logoutUser();
+    if (checkAuth()) {
+      logoutUser();
       navigate("/");
     }
     else navigate("/login");
@@ -22,7 +21,7 @@ const Navbar = () => {
             <Link to="/">Home</Link>
           </li>
         </ul>
-        {location.pathname !== "/login" ? <button onClick={handleLoging}>{isAuthed ? "Log Out": "Log In"}</button> : null}
+        {location.pathname !== "/login" ? <button onClick={handleLoging}>{checkAuth() ? "Log Out": "Log In"}</button> : null}
       </nav>
       <Outlet />
     </>

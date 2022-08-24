@@ -11,7 +11,7 @@ const FacebookLoginCard = () => {
       }, { scope: ['email', 'public_profile', 'user_posts', 'user_photos'] });
     });
     console.log(authResponse);
-  }
+  };
 
   window.FB.login(function(response) {
     if (response.authResponse) {
@@ -30,6 +30,6 @@ const FacebookLoginCard = () => {
       <button onClick={fBLogin}>Login To FB</button>
     </Card>
   );
-}
+};
 
 export default FacebookLoginCard;

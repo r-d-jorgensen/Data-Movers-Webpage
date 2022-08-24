@@ -1,29 +1,19 @@
 import axios from "axios";
-import { BehaviorSubject } from 'rxjs';
 import serverEndpoint from "../utils/serverEndpoint";
 
-// TODO: check in on bug where refreshing causes user to be logged out
-const userSubject = new BehaviorSubject({
-  isAuthed: false,
-  token: null,
-  error: null,
-  user_id: null,
-  user_type_ENUM_id: null
-});
-
-async function createNewUser(username, password, email) {
+export async function createNewUser(username, password, email) {
   const authResponse = await axios.get(`${serverEndpoint}/user/newUser/${username}/${password}/${email}`)
     .then((data) => data.data)
     .catch((error) => console.log(error));
 
-    if (!authResponse) return {isAuthed: false, error: "server did not respond"};
-    if (authResponse.error !== null) return {isAuthed: false, error: authResponse.error};
-
-    userSubject.next(authResponse);
-    return {isAuthed: true, error: null};
+  if (!authResponse) return {isAuthed: false, error: "server did not respond"};
+  if (authResponse.error !== null) return {isAuthed: false, error: authResponse.error};
+  
+  localStorage.setItem('user', JSON.stringify(authResponse));
+  return {isAuthed: true, error: null};
 }
 
-async function logInUser(username, password) {
+export async function logInUser(username, password) {
   const authResponse = await new Promise((resolve, reject) => {
     axios.get(`${serverEndpoint}/user/login/${username}/${password}`)
       .then((data) => resolve(data.data))
@@ -33,26 +23,16 @@ async function logInUser(username, password) {
   if (!authResponse) return {isAuthed: false, error: "server did not respond"};
   if (authResponse.error !== null) return {isAuthed: false, error: authResponse.error};
 
-  userSubject.next(authResponse);
+  localStorage.setItem('user', JSON.stringify(authResponse));
   return {isAuthed: true, error: null};
 }
 
-function logoutUser() {
-  userSubject.next({
-    isAuthed: false,
-    token: null,
-    error: null,
-    user_id: null,
-    user_type_ENUM_id: null
-  });
+export function logoutUser() {
+  localStorage.clear();
 }
 
-const userService = {
-  createNewUser,
-  logInUser,
-  logoutUser,
-  account: userSubject.asObservable(),
-  get userData() { return userSubject.value; },
-};
-
-export default userService;
+export function checkAuth() {
+  const userData = localStorage.getItem("user");
+  if (userData) return JSON.parse(userData).isAuthed;
+  return false;
+}
